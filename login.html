@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <style type="text/css">
+        body {
+            background-image: url("img/wallhaven-3k7qjv.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 100%;
+            height: 100%;
+            background-attachment: fixed;
+        }
+        .main {
+            width: 500px;
+            height: 300px;
+            background-color: white;
+            border-radius: 10px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            box-shadow:0 5px 20px 0 #e8e8e8;
+            background:rgba(255,255,255,0.8);
+        }
+        .main h2 {
+            margin-left: 150px;
+            margin-top: 20px;
+            color: dodgerblue;
+        }
+        .bd {
+            margin-left: 50px;
+        }
+        .bd input {
+            width: 300px;
+            height: 30px;
+            margin-top: 16px;
+            border: 1px solid lighegrey;
+            outline: none;
+        }
+        .login {
+            width: 130px;
+            height: 40px;
+            font-size: 20px;
+            margin-top: 30px;
+            margin-left: 180px;
+            background-color: dodgerblue;
+            border: 1px solid dodgerblue;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main">
+    <h2>k8s-dashboard</h2>
+    <form action="#">
+        <div class="bd">
+            <strong>Username</strong> <input type="text" name="username"><br>
+            <strong>Password&nbsp;&nbsp;</strong><input type="password" name="password"><br>
+        </div>
+        <input type="submit" value="Log in" class="login">
+    </form>
+</div>
+</body>
+</html>
