@@ -1,10 +1,61 @@
 
-
-
+<!-- TOC -->
+* [基础知识](#)
+    * [Django基本使用](#django)
+      * [Django是什么](#django)
+      * [开发环境准备](#)
+      * [创建项目](#)
+      * [牛刀小试](#)
+      * [牛刀小试第二个页面：网页展示日志文件](#)
+      * [Django工作流程](#django)
+    * [Django路由系统](#django)
+      * [URL路由系统是什么](#url)
+      * [URL配置](#url)
+      * [URL正则表达式](#url)
+      * [URL名称](#url)
+    * [Django试图](#django)
+      * [Django内置函数](#django)
+      * [HttpRequest对象](#httprequest)
+        * [常用属性](#)
+        * [常用方法](#)
+        * [接收URL参数](#url)
+        * [QueryDict对象](#querydict)
+        * [示例](#)
+      * [HttpResponse函数](#httpresponse)
+        * [render函数](#render)
+        * [redirect函数](#redirect)
+        * [StreamingHttpResponse函数](#streaminghttpresponse)
+        * [StreamingHttpResponse函数](#streaminghttpresponse)
+        * [FileResponse函数](#fileresponse)
+        * [JsonResponse函数](#jsonresponse)
+    * [Django模板系统](#django)
+      * [模板是什么](#)
+      * [变量](#)
+      * [标签](#)
+      * [常用过滤器](#)
+        * [自定义过滤器](#)
+      * [注释](#)
+      * [模板继承](#)
+      * [模板导入](#)
+      * [引用静态文件](#)
+    * [数据模型(ORM)](#--orm-)
+      * [ORM介绍、配置使用数据库](#orm)
+        * [ORM是什么](#orm)
+        * [使用ORM](#orm)
+        * [使用Mysql数据库](#mysql)
+        * [ORM基本增删改查](#orm)
+        * [内置管理后台](#)
+        * [模型中的Meta类与方法](#meta)
+      * [QuerySet序列化，模型类常用字段](#queryset)
+      * [一对一关系案例](#)
+      * [多对一关系案例](#)
+      * [多对多关系案例](#)
+      * [Django内置用户认证机制](#django)
+<!-- TOC -->
 
 # 基础知识
 
-## Django入门与进阶
+
 ### Django基本使用
 #### Django是什么
 ```text
@@ -30,7 +81,7 @@ Django是python的一个主流web框架，提供一站式解决方案，开发�
 #### 创建项目
 ```text
 1、创建项目
-django-admin startprojet youproject
+django-admin startprojet youproject .
 2、创建应用
 python manage.py startapp youapp
 3、运行项目
@@ -248,8 +299,6 @@ def article_detail(request, year, month, id):
 ```
 
 
-
-
 ### Django试图
 
 #### Django内置函数
@@ -295,7 +344,7 @@ def index(request):
 
 ##### 接收URL参数
 
-URL参数形式：http://www.aliangedu.cn/demo/?id=1&value=100
+URL参数形式：http://www.xxx.cn/demo/?id=1&value=100
 
 ```python
 def url_args(request):
@@ -378,7 +427,7 @@ from django.shortcuts import render
 from datetime import datetime
 def current_datetime(request):
     now = datetime.now()
-    return render(request, 'demo/html', {'datetime': now})
+    return render(request, 'demo.html', {'datetime': now})
 ```
 
 
@@ -503,7 +552,7 @@ Django模板系统：用于自动渲染一个文本文件，一般用于HTML页�
 
 ```python
 def hello(request):
-    user = {'name': '阿良', 'property': {'sex': '男', 'age': 30}}
+    user = {'name': '张三', 'property': {'sex': '男', 'age': 30}}
 	return render(request, 'user.html', {'user': user})
 ```
 
@@ -544,7 +593,7 @@ def user(request):
 
 #### 标签
 
-**if条件判断**
+**if条件判断**f
 
 判定给定的条件是否满足（True或False），根据判断的结果决定执行的语句。 
 
@@ -559,7 +608,7 @@ def user(request):
     <内容块> 
 {% endif %}
 ```
-
+f
 **操作符号**
 
 | 类型       | 操作符                                              |
@@ -733,4 +782,272 @@ STATIC_URL = '/static/'
 {% load static %} # 在模板文件开头
 <link rel="stylesheet" href="{% static 'main.css' %}">
 ```
+### 数据模型(ORM)
+
+#### ORM介绍、配置使用数据库
+##### ORM是什么
+```text
+对象关系映射（Object Relational Mapping，ORM）：是一种程序设计技术，用于实现面向对象编程语言里不同类型系统的数据之间的转换。
+简单来说就是在编程语言中实现的一种虚拟对象数据库。我们对虚拟对象数据库进行操作，它会转成具体的SQL去操作数据库，这样一来我们就不需要学习复杂的sql语句了。
+
+视图函数---> python代码 ---> ORM ---> 转换为SQL ---> Mysql等数据库
+```
+##### 使用ORM
+```text
+1、使用模型类定义一个User表，包含多字段
+# myapp/models.py
+from django.db import models
+
+
+class User(models.Model):
+    user = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
+    sex = models.CharField(max_length=30)
+    age = models.IntegerField()
+    label = models.CharField(max_length=30)
+
+
+2、在settings.py配置文件中INSTALLED_APPS列表添加APP名称
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'myapp',
+]
+3、将模型类生成具体的数据库表
+# 生成迁移文件
+python manage.py makemigrations
+# 执行迁移文件生成表
+python manage.py migrate
+4、进入数据库进行查看表
+生成表名的默认格式：应用名_模型类名小写
+```
+
+##### 使用Mysql数据库
+```text
+1、启动一个MySQL数据库
+# docker-compose.yaml
+version: '3'
+services:
+  mysql:
+    image: 'mysql/mysql-server:5.7'
+    restart: always
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+      --max_allowed_packet=128M;
+    ports:
+      - 3306:3306
+执行授权
+docker exec mysql mysql -uroot -p123456 -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION; flush privileges; flush privileges;"
+docker exec mysql mysql -uroot -p123456 -e "create database test;"
+
+2、使用pip工具安装pymysql模块
+pip install pymysql
+3、修改django默认连接数据库
+# settings.py
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'test',
+        'USER': 'root',
+        'PASSWORD': '123456',
+        'HOST': '10.0.0.5',
+        'PORT': '3306',
+    }
+}
+4、指定数据库驱动
+# myapp/__init__.py
+import pymysql
+pymysql.install_as_MySQLdb()
+5、执行迁移文件生成表
+python manager.py migrate
+```
+
+##### ORM基本增删改查
+```text
+# 增
+from myapp.models import User
+
+
+def orm_user_add(request):
+    User.objects.create(
+        user='张三',
+        name='法外狂徒',
+        sex='男',
+        age='30',
+        label='游走在法律边缘'
+    )
+    return HttpResponse('用户添加成功！')
+
+# 查
+def user_list(request):
+    user_list = User.objects.all()
+    for user in user_list:
+        print(user.name)
+    return render(request, "user.html", {'user_list': user_list})
+
+# templates/user.html
+用户列表
+{% for user in user_list %}
+<p>{{ user.name }}</p>
+{% endfor %}
+```
+![img.png](img.png)
+
+```text
+# 获取所有数据
+User.objects.all()
+# 加条件获取数据
+User.objects.filter(user='zhangsan')
+# 获取单条数据
+User.objects.get(id=2)
+
+# 改
+User.objects.filter(user='zhangsan').update(age=27,label='奥里给')
+或者
+obj = User.objects.get(user='zhangsan')
+obj.age = 27
+obj.save()
+
+# 删
+User.objects.filter(id=3).delete()
+或者
+obj=User.objects.get(id=3)
+obj.delete()
+```
+
+##### 内置管理后台
+```text
+1、访问URL
+http://127.0.0.1:8000/admin/login/?next=/admin/
+
+2、创建管理员账户
+python manager.py createsuperuser
+
+3、注册模型
+# myapp/admin.py
+from django.contrib import admin
+from myapp import models
+admin.site.register(models.User)
+
+4、设置语言和时区
+# settings.py
+LANGUAGE_CODE = 'zh-hans'
+TIME_ZONE = 'Asia/Shanghai'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+```
+![img_1.png](img_1.png)
+
+
+##### 模型中的Meta类与方法
+Django模型类的Meta是一个内部类，它用于定义一些Django模型类的行为特性
+以下是该常用属性：
+
+| 元选项                 | 描述                                                                             |
+|---------------------|--------------------------------------------------------------------------------|
+| app_label           | 指定APP名称，当模型类不在默认的APP的models.py文件中，这时需要指定模型类是属于哪个APP                            |
+| db_table            | 指定生成的数据库表名，默认是"应用名_模型名"                                                        |
+| ordering            | 对象的默认顺序，值是一个列表或元素。元素是一个字符串表示字段名，元素前面带减号表示倒序没有表示升序，问号表达随机排序，例如ordering=【"-sex"】 |
+| verbose_name        | 定义一个易读的模型名称，默认会加一个复数s                                                          |
+| verbose_name_plural | 定义一个易读的模型名称，不带复数s                                                              |
+
+
+```text
+# myapp/models.py
+class User(models.Model):
+    user = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
+    sex = models.CharField(max_length=30)
+    age = models.IntegerField()
+    label = models.CharField(max_length=30)
+
+    class Meta:
+        app_label = "myapp"
+        db_table = "myapp_user"
+        verbose_name = "用户表"
+        verbose_name_plural = "用户表"
+
+    def __str__(self):
+        return self.user
+```
+
+**模型类常用字段**
+
+| 字段类型                                                     | 描述                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| AutoField(**options)                                         | ID自动递增，会自动添加到模型中                               |
+| BooleanField(**options)                                      | 布尔值字段（true/false），默认值是None                       |
+| CharField(max_length=None[,**options])                       | 存储各种长度的字符串                                         |
+| EmailField([max_length=254,**options])                       | 邮件地址，会检查是否合法                                     |
+| FileField([upload_to=None,max_length=100,**options])         | 保存上传文件。upload_to是保存本地的目录路径                  |
+| FloatField([**options]                                       | 浮点数                                                       |
+| GenericIPAddressField(protocol=’both’, unpack_ipv4=False, **options) | IP地址                                                       |
+| TextField([**options])                                       | 大文本字符串                                                 |
+| URLField([max_length=200,**options])                         | 字符串类型的URL                                              |
+| DateTimeField([auto_now=False,auto_now_add=False,**options]) | 日期和时间   1、auto_now=True时，第二次保存对象时自动设置为当前时间。用于 最后一次修改的时间戳，比如更新。 2、auto_now_add=True时，第一次创建时自动设置当前时间。用于创 建时间的时间戳，比如新增。 这两个参数互斥，不能写到一个字段里，分开定义字段用。 |
+| DateField([auto_now=False,auto_now_add=False,**options])     | 日期                                                         |
+| TimeField([auto_now=False,auto_now_add=False,**options])     | 时间                                                         |
+
+
+**模型类常用字段选项**
+
+
+| 选项         | 描述                                      |
+| ------------ | ----------------------------------------- |
+| null         | 如果为True，字段用NULL当做空值，默认False |
+| blank        | 如果为True，允许为空，默认False           |
+| db_index     | 如果为True，为此字段建立索引              |
+| default      | 字段的默认值                              |
+| primary_key  | 如果为True，设置为主键                    |
+| unique       | 如果为True，保持这个字段的值唯一          |
+| verbose_name | 易读的名称，管理后台会以这个名称显示      |
+
+
+
+#### QuerySet序列化，模型类常用字段
+序列化：将Python对象转为传输的数据格式
+
+反序列化：将传输的数据格式转为Python对象
+
+ORM查询返回的是QuerySet对象，如果你要提供数据接口，这显然是不行的。
+
+有两种方法可以转为JSON字符串：
+· 使用内建函数 serializers
+· 遍历QuerySet对象将字段拼接成字典，再通过json库编码
+```text
+from django.core import serializers
+obj = User.objects.all()
+data = serializers.serialize('json', obj)
+```
+
+```text
+import json
+obj = User.objects.all()
+d = {}
+for i in user_list:
+d['name'] = i.name
+d['user'] = i.user
+d['label'] = i.label
+data = json.dumps(d)
+```
+
+#### 一对一关系案例
+
+#### 多对一关系案例
+
+#### 多对多关系案例
+
+#### Django内置用户认证机制
 
