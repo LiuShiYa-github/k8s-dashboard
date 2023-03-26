@@ -1,3 +1,4 @@
+
 <!-- TOC -->
 * [基础知识](#基础知识)
     * [Django基本使用](#Django基本使用)
@@ -55,16 +56,16 @@
       * [多对多关系案例](#多对多关系案例)
         * [创建模关系](#创建模关系)
         * [增删改查](#增删改查)
-    * [Django内置用户认证机制](#Django内置用户认证机制)
-      * [内置用户认证系统](#内置用户认证系统)
-      * [auth模块使用](#auth模块使用)
-      * [Django Session管理](#Django Session管理)
+      * [Django内置用户认证机制](#Django内置用户认证机制)
+        * [内置用户认证系统](#内置用户认证系统)
+        * [auth模块使用](#auth模块使用)
+    * [Django Session管理](#Django Session管理)
         * [Session与Cookie是什么](#Session与Cookie是什么)
         * [Django使用Session](#Django使用Session)
-    * [Django CSRF防护](#Django CSRF防护)
-      * [CSRF是什么](#CSRF是什么)
-      * [Django CSRF工作原理](#Django CSRF工作原理)
-      * [使用CSRF防护机制](#使用CSRF防护机制)
+    * [DjangoCSRF防护](#Django CSRF防护)
+        * [CSRF是什么](#CSRF是什么)
+        * [DjangoCSRF工作原理](#DjangoCSRF工作原理)
+        * [使用CSRF防护机制](#使用CSRF防护机制)
 <!-- TOC -->
 
 
