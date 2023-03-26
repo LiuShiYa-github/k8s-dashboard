@@ -55,16 +55,16 @@
       * [多对多关系案例](#多对多关系案例)
         * [创建模关系](#创建模关系)
         * [增删改查](#增删改查)
-      * [Django内置用户认证机制](#Django内置用户认证机制)
-        * [内置用户认证系统](#内置用户认证系统)
-        * [auth模块使用](#auth模块使用)
+    * [Django内置用户认证机制](#Django内置用户认证机制)
+      * [内置用户认证系统](#内置用户认证系统)
+      * [auth模块使用](#auth模块使用)
       * [Django Session管理](#Django Session管理)
         * [Session与Cookie是什么](#Session与Cookie是什么)
         * [Django使用Session](#Django使用Session)
-      * [Django CSRF防护](#Django CSRF防护)
-        * [CSRF是什么](#CSRF是什么)
-        * [Django CSRF工作原理](#Django CSRF工作原理)
-        * [使用CSRF防护机制](#使用CSRF防护机制)
+    * [Django CSRF防护](#Django CSRF防护)
+      * [CSRF是什么](#CSRF是什么)
+      * [Django CSRF工作原理](#Django CSRF工作原理)
+      * [使用CSRF防护机制](#使用CSRF防护机制)
 <!-- TOC -->
 
 
@@ -1487,7 +1487,7 @@ MIDDLEWARE = [
 ]
 ```
 
-#### Django Session管理
+### Django Session管理
 
 
 ##### Session与Cookie是什么
@@ -1559,7 +1559,7 @@ MIDDLEWARE = [
 
 
 
-#### Django CSRF防护
+### Django CSRF防护
 ##### CSRF是什么
 ```text
 CSRF（Cross Site Request Forgery）：跨站请求伪造，实现的原
