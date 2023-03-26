@@ -1,57 +1,72 @@
+<!-- TOC -->
+* [基础知识](#基础知识)
+    * [Django基本使用](#Django基本使用)
+      * [Django是什么](#Django是什么)
+      * [开发环境准备](#开发环境准备)
+      * [创建项目](#创建项目)
+      * [牛刀小试](#牛刀小试)
+      * [牛刀小试第二个页面：网页展示日志文件](#牛刀小试第二个页面：网页展示日志文件)
+      * [Django工作流程](#Django工作流程)
+    * [Django路由系统](#Django路由系统)
+      * [URL路由系统是什么](#URL路由系统是什么)
+      * [URL配置](#URL配置)
+      * [URL正则表达式](#URL正则表达式)
+      * [URL名称](#URL名称)
+    * [Django试图](#Django试图)
+      * [Django内置函数](#Django内置函数)
+      * [HttpRequest对象](#HttpRequest对象)
+        * [常用属性](#常用属性)
+        * [常用方法](#常用方法)
+        * [接收URL参数](#接收URL参数)
+        * [QueryDict对象](#QueryDict对象)
+        * [示例](#示例)
+      * [HttpResponse函数](#HttpResponse函数)
+        * [render函数](#render函数)
+        * [redirect函数](#redirect函数)
+        * [StreamingHttpResponse函数](#StreamingHttpResponse函数)
+        * [StreamingHttpResponse函数](#StreamingHttpResponse函数)
+        * [FileResponse函数](#FileResponse函数)
+        * [JsonResponse函数](#JsonResponse函数)
+    * [Django模板系统](#Django模板系统)
+      * [模板是什么](#模板是什么)
+      * [变量](#变量)
+      * [标签](#标签)
+      * [常用过滤器](#常用过滤器)
+        * [自定义过滤器](#自定义过滤器)
+      * [注释](#注释)
+      * [模板继承](#模板继承)
+      * [模板导入](#模板导入)
+      * [引用静态文件](#引用静态文件)
+    * [数据模型(ORM)](#数据模型(ORM))
+      * [ORM介绍、配置使用数据库](#ORM介绍、配置使用数据库)
+        * [ORM是什么](#ORM是什么)
+        * [使用ORM](#使用ORM)
+        * [使用Mysql数据库](#使用Mysql数据库)
+        * [ORM基本增删改查](#ORM基本增删改查)
+        * [内置管理后台](#内置管理后台)
+        * [模型中的Meta类与方法](#模型中的Meta类与方法)
+      * [QuerySet序列化，模型类常用字段](#QuerySet序列化，模型类常用字段)
+      * [一对一关系案例](#一对一关系案例)
+        * [创建模型关系](#创建模型关系)
+        * [增删改查](#增删改查)
+      * [一对多关系案例](#一对多关系案例)
+        * [创建模型关系](#创建模型关系)
+        * [增删改查](#增删改查)
+      * [多对多关系案例](#多对多关系案例)
+        * [创建模关系](#创建模关系)
+        * [增删改查](#增删改查)
+      * [Django内置用户认证机制](#Django内置用户认证机制)
+        * [内置用户认证系统](#内置用户认证系统)
+        * [auth模块使用](#auth模块使用)
+      * [Django Session管理](#Django Session管理)
+        * [Session与Cookie是什么](#Session与Cookie是什么)
+        * [Django使用Session](#Django使用Session)
+      * [Django CSRF防护](#Django CSRF防护)
+        * [CSRF是什么](#CSRF是什么)
+        * [Django CSRF工作原理](#Django CSRF工作原理)
+        * [使用CSRF防护机制](#使用CSRF防护机制)
+<!-- TOC -->
 
-<!-- TOC -->
-* [基础知识](#)
-    * [Django基本使用](#django)
-      * [Django是什么](#django)
-      * [开发环境准备](#)
-      * [创建项目](#)
-      * [牛刀小试](#)
-      * [牛刀小试第二个页面：网页展示日志文件](#)
-      * [Django工作流程](#django)
-    * [Django路由系统](#django)
-      * [URL路由系统是什么](#url)
-      * [URL配置](#url)
-      * [URL正则表达式](#url)
-      * [URL名称](#url)
-    * [Django试图](#django)
-      * [Django内置函数](#django)
-      * [HttpRequest对象](#httprequest)
-        * [常用属性](#)
-        * [常用方法](#)
-        * [接收URL参数](#url)
-        * [QueryDict对象](#querydict)
-        * [示例](#)
-      * [HttpResponse函数](#httpresponse)
-        * [render函数](#render)
-        * [redirect函数](#redirect)
-        * [StreamingHttpResponse函数](#streaminghttpresponse)
-        * [StreamingHttpResponse函数](#streaminghttpresponse)
-        * [FileResponse函数](#fileresponse)
-        * [JsonResponse函数](#jsonresponse)
-    * [Django模板系统](#django)
-      * [模板是什么](#)
-      * [变量](#)
-      * [标签](#)
-      * [常用过滤器](#)
-        * [自定义过滤器](#)
-      * [注释](#)
-      * [模板继承](#)
-      * [模板导入](#)
-      * [引用静态文件](#)
-    * [数据模型(ORM)](#--orm-)
-      * [ORM介绍、配置使用数据库](#orm)
-        * [ORM是什么](#orm)
-        * [使用ORM](#orm)
-        * [使用Mysql数据库](#mysql)
-        * [ORM基本增删改查](#orm)
-        * [内置管理后台](#)
-        * [模型中的Meta类与方法](#meta)
-      * [QuerySet序列化，模型类常用字段](#queryset)
-      * [一对一关系案例](#)
-      * [多对一关系案例](#)
-      * [多对多关系案例](#)
-      * [Django内置用户认证机制](#django)
-<!-- TOC -->
 
 # 基础知识
 
@@ -870,7 +885,7 @@ DATABASES = {
 import pymysql
 pymysql.install_as_MySQLdb()
 5、执行迁移文件生成表
-python manager.py migrate
+python manage.py migrate
 ```
 
 ##### ORM基本增删改查
@@ -1037,17 +1052,582 @@ import json
 obj = User.objects.all()
 d = {}
 for i in user_list:
-d['name'] = i.name
-d['user'] = i.user
-d['label'] = i.label
+    d['name'] = i.name
+    d['user'] = i.user
+    d['label'] = i.label
 data = json.dumps(d)
 ```
 
 #### 一对一关系案例
 
-#### 多对一关系案例
+```text
+常见的数据模型关系有：
+• 一对一(one-to-one)，OneToOneField
+• 一对多，多对一(one-to-many)，ForeignKey
+• 多对多（many-to-many），ManyToManyField
+```
+
+**一对一**
+```text
+一对一：一个表中的每条记录对应另一个表中的每条记录，使用OneToOneField建立关系。
+例如：一个人对应一个身份证号，一个身份证号也对应一个人
+应用场景：当一个表想扩展字段，最常用的方式就是在这个表添加一个对一关系
+```
+##### 创建模型关系
+
+**示例：定义一对一模型关系**
+```text
+class User(models.Model):
+    user = models.CharField(max_length=30, verbose_name="用户名")
+    name = models.CharField(max_length=30, verbose_name="姓名")
+    sex = models.CharField(max_length=30, verbose_name="性别")
+    age = models.IntegerField(verbose_name="年龄")
+    label = models.CharField(max_length=100, verbose_name="标签")
+class IdCard(models.Model):
+    number = models.CharField(max_length=20, verbose_name="卡号")
+    address = models.CharField(max_length=50, default="北京")
+    user = models.OneToOneField(User, on_delete=models.CASCADE) # 定义一对一的模型关系,on_delete=models.CASCADE 表示级联删除
+```
+
+##### 增删改查
+```text
+# 增：
+方式1： 
+user_obj = User.objects.create(user='alan',name='阿兰',sex='女',age='25',label="运营,漂亮,喜欢购物")
+IdCard.objects.create(user=user_obj, number="456789", address="北京")
+方式2：
+user = User()
+user.user='xiaoming'
+user.name = "阿兰"
+user.sex = '女'
+user.age = 25
+user.label = "运营,漂亮,喜欢购物"
+user.save()
+
+向已有用户添加身份证信息:
+user_obj = User.objects.get(user="aliang")
+IdCard.objects.create(user=user_obj,
+number="123456789", address="北京")
+
+# 查:
+
+反向查询：通过用户查到身份证信息（user->idcard）
+user = User.objects.get(user="aliang")
+print(user.idcard.number)
+print(user.idcard.address)
+ 
+正向查询：从身份证表查用户（idcard->user）
+idcard = IdCard.objects.get(user_id=1)
+print(idcard.user.user)
+print(idcard.user.name)
+
+# 改：
+user_obj = User.objects.get(user="aliang")
+# 修改身份证信息
+user_obj.idcard.address="河南"
+user_obj.idcard.save()
+# 修改用户信息
+user_obj.age = 38
+user_obj.save()
+
+# 删：
+User.objects.filter(user="alan").delete()
+```
+#### 一对多关系案例
+
+**一对多**
+
+```text
+一对一是表与表之间的关系，而一对多、多对多是表与表中数据的关系
+
+一对多：A表中的某个记录对应B表中的多条记录，使用ForeignKey建立关系。
+
+例如：项目部署涉及表
+一对多：一个项目有多个应用，一个应用只能属于一个项目
+多对多：一个应用部署到多台服务器，一个服务器部署多个应用
+```
+![img_2.png](img_2.png)
+
+##### 创建模型关系
+
+```text
+# myapp/models.py
+class Project(models.Model):
+    name = models.CharField(max_length=30)
+    describe = models.CharField(max_length=100, null=True)
+    datetime = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'project'
+        verbose_name_plural = '项目'
+
+
+class App(models.Model):
+    name = models.CharField(max_length=30)
+    describe = models.CharField(max_length=100, null=True)
+    datetime = models.DateTimeField(auto_now_add=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)  # 定义一对多的模型关系
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'app'
+        verbose_name_plural = '应用'
+
+
+class Server(models.Model):
+    hostname = models.CharField(max_length=30)
+    ip = models.GenericIPAddressField()
+    describe = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.hostname
+
+    class Meta:
+        db_table = 'server'
+        verbose_name_plural = '服务器'
+
+# myapp/urls.py
+from django.urls import path
+from myapp import views
+urlpatterns = [
+    path('hello/', views.hello),
+    path('logs/', views.logs),
+    path('orm/', views.orm_user_add),
+    path('user_list/', views.user_list),
+    path('app/', views.app),
+]
+    
+
+# myapp/views.py
+def app(request):
+    app_list = App.objects.all()
+    return render(request, "app.html", {'app_list': app_list})
+
+# templates/app.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>所有的应用</title>
+</head>
+<body>
+<table border="1">
+  <thead>
+  <tr>
+    <th>应用名称</th>
+    <th>应用描述</th>
+    <th>所属项目名</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  {% for app in app_list %}
+  <tr>
+    <td>{{ app.name }}</td>
+    <td>{{ app.describe }}</td>
+    <td>{{ app.project.name }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</body>
+</html>
+```
+![img_3.png](img_3.png)
+![img_4.png](img_4.png)
+
+##### 增删改查
+```text
+# 向项目表添加知的项目名称：
+Project.objects.create(name="电商项目",describe="电商项目描述...")
+Project.objects.create(name="在线教育项目",describe="在线教育项目描述...")
+Project.objects.create(name="大数据项目",describe="大数据项目描述...")
+
+# 创建新应用并加入到项目中
+project_obj = Project.objects.get(name="电商项目")
+App.objects.create(name="product",describe="商品服务",project=project_obj)
+注：操作模型类记得先导入 from myapp.models import Project,App
+
+# 正向查询：通过应用名称查询所属项目（app->project）
+
+查询某个应用所属项目：
+app = App.objects.get(name="product") # 获取应用
+app.project.name # 根据获取的应用，查询对应项目名称
+查询所有应用所属项目：
+app_list = App.objects.all()
+for i in app_list:
+    print(i.name, i.project.name, i.project.describe)
+
+反向查询：通过项目名称查询有哪些应用（project->app）
+
+查询某个项目有哪些应用：
+project = Project.objects.get(name="电商项目") # 获取项目
+project.app_set.all() # 根据获取的项目，查询所有应用
+查询所有项目有哪些引用：
+project = Project.objects.all()
+for i in project:
+    print(i.name, i.app_set.all())
+
+```
 
 #### 多对多关系案例
+多对多：A表中的某个记录对应B表中的多条记录，B表中的某个记录对应A表中多条记
+录。使用ManyToManyField建立关系。
+
+例如：一个应用部署到多台服务器，一个服务器部署多个应用
+
+##### 创建模关系
+````text
+class Server(models.Model):
+    hostname = models.CharField(max_length=30)
+    ip = models.GenericIPAddressField()
+    describe = models.CharField(max_length=100, null=True)
+    app = models.ManyToManyField(App)
+    
+    def __str__(self):
+        return self.hostname
+        
+    class Meta:
+        db_table = 'server'
+        verbose_name_plural = '服务器'
+
+````
+Django会自动创建一个表来管理多对多关系，称为中间表；这个中间表的名称使用多对多的
+名称和包含这张表的模型的名称生成，也可以使用db_table选项指定这个中间表名称。
+![img_5.png](img_5.png)
+
+
+##### 增删改查
+```text
+添加服务器：
+Server.objects.create(hostname="ec-test1", ip="192.168.1.10", describe="电商项目测试服务器1")
+Server.objects.create(hostname="ec-test2", ip="192.168.1.11", describe="电商项目测试服务器2")
+Server.objects.create(hostname="bigdata-test1", ip="192.168.1.11", describe="大数据项目测试服务器1")
+
+部署一个应用到指定服务器：
+project_obj = Project.objects.get(name="电商项目")
+app = App.objects.create(name="portal",describe="前端服务",project=project_obj)
+server = Server.objects.get(hostname="ec-test1")
+server.app.add(app) # 将服务器关联到应用
+
+
+正向查询：查询服务器部署了哪些应用（server->app）
+
+查询某台服务器部署了哪些应用：
+server = Server.objects.get(hostname="ec-test1")
+server.app.all()
+
+
+查询所有服务器部署了哪些应用：
+server_list = Server.objects.all()
+for i in server_list:
+    print(i.hostname, i.app.all())
+
+
+反向查询：查看某个应用部署到哪些服务器，通过项目名称查询有哪些应
+用（app->server）
+
+查询某个应用部署到哪些服务器：
+app = App.objects.get(name="portal")
+app.server_set.all()
+
+查询所有应用部署到哪些服务器：
+for i in app_list:
+    print(i.name, i.server_set.all())
+
+
+中间表关系操作
+增加：
+server = Server.objects.get(hostname=“ec-test1") # 获取已有的服务器
+server.app.add(3) # 将应用id3关联该服务器
+server.app.add(1,2,3) # 将应用id1、2、3关联该服务器
+
+删除：
+server.app.remove(3) # 将应用id3与该服务器取消关联
+清空
+server.app.clear() # 将该服务器取消所有应用关联
+
+```
+
 
 #### Django内置用户认证机制
+
+##### 内置用户认证系统
+Django内置一个用户认证系统，使用auth模块实现。
+
+auth模块提供了登录、注册、效验、修改密码、注销、验证用户是否登录等功能。
+
+![img_6.png](img_6.png)
+
+Django默认创建的数据库表：
+```text
+• auth_user ：用户表
+• auth_user_groups ：用户所属组的表
+• auth_user_user_permissions ：用户权限表
+• auth_group ：用户组表
+• auth_group_permissions ：用户组权限表
+• auth_permission ：存放全部权限的表，其他的表的权限都是从此表中外键连接过去的
+• django_session ：保存HTTP状态
+• django_migrations ：数据库迁移记录
+```
+
+
+##### auth模块使用
+
+
+**login()**
+
+示例：登录认证
+```text
+from django.contrib import auth
+from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+
+
+def login(request):
+    if request.method == "GET":
+        return render(request, "login.html")
+    elif request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        # 对用户登录验证
+        user = auth.authenticate(username=username, password=password)  # 验证通过，返回一个用户名，否则为None
+        if user:
+            auth.login(request, user)
+            return redirect("/")
+        else:
+            msg = "用户名或密码错误！"
+            return render(request, 'login.html', {'msg': msg})
+
+
+@login_required()
+def index(request):
+    return render(request, 'index.html')
+
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/login')
+```
+登录表单：
+```text
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+</head>
+<body>
+<h1>欢迎访问管理后台</h1>
+<form action="" method="post">
+    账号：<input type="text" name="username"><br>
+    密码：<input type="password" name="password"><br>
+    <button type="submit">提交</button>
+    <span style="color: red">{{ msg }}</span>
+</form>
+</body>
+</html>
+
+```
+首页
+```text
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+<h1>网站首页</h1>
+<a href="/logout"><button>退出登录</button></a>
+</body>
+</html>
+```
+
+**logout()**
+
+示例：退出登录
+```text
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/login')
+
+```
+
+**login_required装饰器**
+login_required装饰器：判断用户是否登录，如果没有登录引导至登录页面，登录
+成功后跳转到目的页面。
+
+示例：
+```text
+
+@login_required()
+def index(request):
+    return render(request, 'index.html')
+```
+
+在settings.py文件设置没有登录默认跳转页面并关闭csrf token验证：
+```text
+LOGIN_URL = '/login/'
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+```
+
+#### Django Session管理
+
+
+##### Session与Cookie是什么
+
+```text
+就像你去电商平台购物一样，而网站采用是HTTP协议，它本身就是一个无状态的，是记不住你上次来做了什
+么事，那怎么记住每个用户呢。
+于是，服务器给每个用户贴了一个小纸条，上面记录了服务器给我们返回的一些信息。然后服务器看到这张
+小纸条就知道我们是谁了。
+
+这个小纸条就是Cookie。那么Cookie怎么工作的呢？
+1. 浏览器第一次访问服务器时，服务器此时肯定不知道它的身份，所以创建一个独特的身份标识数据，格式
+为key=value，放入到Set-Cookie字段里，随着响应报文发给浏览器。
+2. 浏览器看到有Set-Cookie字段以后就知道这是服务器给的身份标识，于是就保存起来，下次请求时会自动
+将此key=value值放入到Cookie字段中发给服务器。
+3. 服务器收到请求报文后，发现Cookie字段中有值，就能根据此值识别用户的身份然后提供个性化的服务。
+
+
+有了Cookie实现了有状态这一需求，那为什么又来一个Session呢？
+试想一下，如果将用户账户的一些信息都存入Cookie中的话，一旦信息被拦截，那么所有的账户信息都会可
+能被泄露丢，这是不安全的。所以就出现了Session，在一次会话中将重要信息保存在Session中，浏览器只
+记录SessionId一个SessionId对应一次会话请求。
+```
+![img_7.png](img_7.png)
+
+##### Django使用Session
+```text
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions', # 这个是session相关的
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'myapp',
+]
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware', # 这个也是session相关的
+    'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+```
+**在settings.py配置文件中设置客户端Cookie**
+
+| 参数                                    | 描述                                                         |
+| --------------------------------------- | ------------------------------------------------------------ |
+| SESSION_COOKIE_NAME ＝ "sessionid"      | Session的cookie保存在浏览器上时的key 即：sessionid＝随机字符串（默认） |
+| SESSION_COOKIE_PATH ＝ "/"              | Session的cookie保存的路径（默认）                            |
+| SESSION_COOKIE_DOMAIN = None            | Session的cookie保存的域名（默认）                            |
+| SESSION_COOKIE_SECURE = False           | 是否Https传输cookie（默认)                                   |
+| SESSION_COOKIE_HTTPONLY = True          | 是否Session的cookie只支持http传输（默认）                    |
+| SESSION_COOKIE_AGE = 1209600            | Session的cookie失效日期（2周）（默认）                       |
+| SESSION_EXPIRE_AT_BROWSER_CLOSE = False | 是否关闭浏览器使得Session过期（默认）                        |
+| SESSION_SAVE_EVERY_REQUEST = False      | 是否每次请求都保存Session，默认修改之后才保存（默认）        |
+
+**在视图中操作Session**
+
+| 参数                              | 描述                |
+| --------------------------------- | ------------------- |
+| request.session['key'] = value    | 向Session写入键值   |
+| request.session.get('key',None)   | 获取Session中键的值 |
+| request.session.flush()           | 清除Session数据     |
+| request.session.set_expiry(value) | Session过期时间     |
+
+
+
+#### Django CSRF防护
+##### CSRF是什么
+```text
+CSRF（Cross Site Request Forgery）：跨站请求伪造，实现的原
+理是CSRF攻击者在用户已经登录目标网站之后，诱使用户访问一个攻
+击页面，利用目标网站对用户的信任，以用户身份在攻击页面对目标网
+站发起伪造用户操作的请求，达到攻击目的。
+
+```
+##### Django CSRF工作原理
+```text
+Django怎么验证一个请求是不是CSRF？
+Django处理客户端请求时，会生成一个随机Token，放到Cookie里一起返回，然后需要前端每次POST请求时带上这
+个Token，可以放到POST数据里键为csrfmiddlewaretoken，或者放到请求头键为X-CSRFToken，Django从这两个
+位置取，每次处理都会拦截验证，通过比对两者是否一致来判断这个请求是不是非法，非法就返回403状态码。
+
+```
+##### 使用CSRF防护机制
+**常见有三种方法可以携带CSRF Token发送给服务端**
+```text
+• from表单添加{% csrf_token %}标签，表单会携带一同提交
+• 如果你是Ajax请求，需要把csrf token字符串（也是通过拿{% csrf_token %}标签产生的值）放到data里一起提交，
+并且键名为csrfmiddlewaretoken或者放到请求头传递服务端
+• 指定取消某函数视图CSRF防护
+```
+
+**使用CSRF防护机制**
+方式一
+```text
+<form method="post">
+    {% csrf_token %}
+    用户名: <input type="text" name="username"><br>
+    密码: <input type="text" name="password"><br>
+    <button type="submit">登录</button>
+</form>
+```
+方式二
+```text
+var csrf_token = $("[name='csrfmiddlewaretoken']").val();
+var data = {'id': '123', 'csrfmiddlewaretoken': csrf_token};
+$.ajax({
+    type: "POST",
+    url: "/api",
+    data: data,
+    dataType: 'json'
+})
+```
+方式三
+```text
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt
+def index(request):
+    return render(request, 'index.html')
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
