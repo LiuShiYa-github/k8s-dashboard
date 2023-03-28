@@ -20,8 +20,6 @@ xmind思维导图
 ```text
 Django文档
 Html文档
-Jquery文档
-Ace文档
 Layui文档
 K8s-api
 ```
