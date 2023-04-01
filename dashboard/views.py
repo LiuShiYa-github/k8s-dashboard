@@ -1,6 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .auth_check import auth_check, self_login_required
-import random
 from .models import User
 from django.http import JsonResponse
 
@@ -16,12 +15,12 @@ def login(request):
     if request.method == "GET":
         return render(request, 'login.html')
     elif request.method == "POST":
-        token = request.POST.get("token", None)
+        token = request.POST.get("token")
         # 处理token登录
         if token:
-            if auth_check("token", token):
+            if auth_check("token", token):  # 如果token是有效登录成功
                 request.session['is_login'] = True
-                request.session['auth_type'] = 'token'
+                request.session['auth_type'] = 'token'  # 用于后期前端调用django，django拿着这个信息去请求k8s api
                 request.session['token'] = token
                 code = 0
                 msg = "登录成功"
@@ -30,26 +29,28 @@ def login(request):
                 msg = "Token无效！"
         else:
             # 处理kubeconfig文件登录
-            file_obj = request.FILES.get('file')
+            file_obj = request.FILES.get("file")
+            import random
             token_random = str(random.random()).split('.')[1]
             try:
-                content = file_obj.read().decode()
+                content = file_obj.read().decode()  # bytes to str
                 User.objects.create(
                     auth_type="kubeconfig",
                     token=token_random,
                     content=content
                 )
                 code = 0
-                msg = "上传文件成功"
+                msg = "上传文件成功."
             except Exception:
                 code = 1
                 msg = "文件类型错误！"
-                result = {"code": code, "msg": msg}
+                result = {'code': code, 'msg': msg}
                 return JsonResponse(result)
-            # 上传文件成功，继续验证是否可以登录成功
-            if auth_check("kubeconfig", token_random):
+
+            # 上传文件成功，继续验证文件合法性
+            if auth_check('kubeconfig', token_random):
                 request.session['is_login'] = True
-                request.session['auth_type'] = 'kubeconfig'
+                request.session['auth_type'] = 'kubeconfig'  # 用于后期前端调用django，django拿着这个信息去请求k8s api
                 request.session['token'] = token_random
                 code = 0
                 msg = "登录成功"
@@ -76,3 +77,9 @@ def deployment(request):
 
 def daemonset(request):
     return render(request, 'daemonset.html')
+
+
+@self_login_required
+def logout(request):
+    request.session.flush()
+    return redirect(login)
