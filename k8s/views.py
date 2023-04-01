@@ -298,3 +298,8 @@ def pv_api(request):
 
         result = {'code': code, 'msg': msg}
         return JsonResponse(result)
+
+
+@auth_check.self_login_required
+def pv_create(request):
+    return render(request, 'k8s/pv_create.html')

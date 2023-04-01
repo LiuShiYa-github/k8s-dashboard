@@ -76,6 +76,7 @@ def deployment_api(request):
         namespace = request.POST.get("namespace", None)
         image = request.POST.get("image", None)
         replicas = int(request.POST.get("replicas", None))
+        containers_name = request.POST.get("containers_name", None)
         print(request.POST)
         # 处理标签
         labels = {}
@@ -129,7 +130,7 @@ def deployment_api(request):
                     spec=client.V1PodSpec(
                         containers=[client.V1Container(
                             # https://github.com/kubernetes-client/python/blob/master/kubernetes/docs/V1Container.md
-                            name="web",
+                            name=containers_name,
                             image=image,
                             env=[{"name": "TEST", "value": "123"}, {"name": "DEV", "value": "456"}],
                             ports=[client.V1ContainerPort(container_port=80)],
@@ -213,3 +214,8 @@ def deployment_api(request):
 
         result = {'code': code, 'msg': msg}
         return JsonResponse(result)
+
+
+@auth_check.self_login_required
+def deployment_create(request):
+    return render(request, 'workload/deployment_create.html')

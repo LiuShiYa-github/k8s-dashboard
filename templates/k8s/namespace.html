@@ -9,6 +9,20 @@
     <a href="">Namespace</a>
 </span>
     <hr>
+
+    <div  id="create" style="display: none">
+        <form class="layui-form " action="">
+          <div class="layui-form-item" style="padding: 10px 100px 10px 10px">
+            <label class="layui-form-label">名称：</label>
+            <div class="layui-input-block">
+              <input type="text" name="name" lay-verify="required" lay-reqtext="名称是必填项!" autocomplete="off" class="layui-input">
+                <br><br>
+              <button type="button" class="layui-btn" lay-submit="" lay-filter="btn" style="margin-left: 25%">立即提交</button>
+            </div>
+          </div>
+        </form>
+    </div>
+
     <div class="layui-card">
         {% csrf_token %}
         <div class="layui-card-body">
@@ -114,6 +128,39 @@
         });
       }
     });
+
+    $("#createNS").on("click", function () {
+        layer.open({
+          type: 1,
+          content: $('#create').html()
+            ,success: function (index, layero) {
+                 form.on('submit(btn)', function(data){
+                    data = data.field;
+                    var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+                    data['csrfmiddlewaretoken'] = csrf_token;
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{% url 'namespace_api' %}",
+                        dataType: "json",
+                        data: data,
+                        success: function(res) {
+                            if (res.code == 0) {
+                                layer.msg(res.msg, {icon: 6});
+                                window.location.reload()
+                            } else if (res.code == 1){
+                                layer.msg(res.msg, {icon: 5})
+                            }
+                        },
+                        error: function (res) {
+                            layer.msg("服务器接口异常！", {icon: 5})
+                        }
+                    })
+                  });
+            }
+        });
+    })
+
 });
 </script>
 
