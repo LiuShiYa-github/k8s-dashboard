@@ -1,34 +1,32 @@
-
 <!-- TOC -->
-* [前端UI框架：Layui](#uilayui)
-  * [1、Layui介绍](#1layui)
-  * [2、Layui基本使用](#2layui)
-  * [3、管理后台布局](#3)
-    * [3.1 导航栏](#31-)
-    * [3.2 管理后台布局与修改](#32-)
-    * [3.3 字体图标](#33-)
-    * [3.4 主题颜色](#34-)
-  * [5、栅格系统](#5)
-  * [6、卡片面板](#6)
-  * [7、按钮](#7)
-  * [8、表单](#8)
-  * [9、上传文件](#9)
-  * [10、数据表格](#10)
-    * [10.1 分页](#101-)
-    * [10.2 表格工具栏](#102-)
-    * [10.3 表格查询](#103-)
-      * [搜索关键字查询](#)
-      * [选择框查询](#)
-    * [10.4 数据表格内容美化](#104-)
-  * [11、弹出层](#11)
+* [前端UI框架Layui](#前端UI框架Layui)
+  * [Layui介绍](#Layui介绍)
+  * [Layui基本使用](#Layui基本使用)
+  * [管理后台布局](#管理后台布局)
+    * [导航栏](#导航栏)
+    * [管理后台布局与修改](#管理后台布局与修改)
+    * [字体图标](#字体图标)
+    * [主题颜色](#主题颜色)
+  * [栅格系统](#栅格系统)
+  * [卡片面板](#卡片面板)
+  * [按钮](#按钮)
+  * [表单](#表单)
+  * [上传文件](#上传文件)
+  * [数据表格](#数据表格)
+    * [分页](#分页)
+    * [表格工具栏](#表格工具栏)
+    * [表格查询](#表格查询)
+      * [搜索关键字查询](#搜索关键字查询)
+      * [选择框查询](#选择框查询)
+    * [数据表格内容美化](#数据表格内容美化)
+  * [弹出层](#弹出层)
 <!-- TOC -->
 
-
-# 前端UI框架：Layui
+# 前端UI框架Layui
 
 ![](https://k8s-1252881505.cos.ap-beijing.myqcloud.com/web-dev/layui.png)
 
-## 1、Layui介绍
+## Layui介绍
 
 layui（谐音：类UI)是一个前端UI框架，遵循原生 HTML/CSS/JS 的书写与组织形式，使用门槛低，拿来即用，给不熟悉前端的工程师带来福音。
 
@@ -42,7 +40,7 @@ Gitee地址：https://gitee.com/sentsin/layui.git
 
 文档目前还未迁移，可先参考镜像站点：[http://](http://layui-doc.pearadmin.com/)[layui-doc.pearadmin.com](http://layui-doc.pearadmin.com/)
 
-## 2、Layui基本使用
+## Layui基本使用
 
 1、下载压缩包
 
@@ -92,9 +90,9 @@ layui.use(['layer', 'form'], function(){  // 导入js模块
 </html>
 ```
 
-## 3、管理后台布局
+## 管理后台布局
 
-### 3.1 导航栏
+### 导航栏
 
 ![https://k8s-1252881505.cos.ap-beijing.myqcloud.com/web-dev/nav-style.png](https://k8s-1252881505.cos.ap-beijing.myqcloud.com/web-dev/nav-style.png)
 
@@ -102,7 +100,7 @@ layui.use(['layer', 'form'], function(){  // 导入js模块
 
 侧栏导航：一般用于管理后台
 
-### 3.2 管理后台布局与修改
+### 管理后台布局与修改
 
 管理后台布局代码：
 
@@ -243,7 +241,7 @@ layui.use(['element', 'layer', 'util'], function(){
 子菜单选中类样式：layui-this
 ```
 
-### 3.3 字体图标
+### 字体图标
 
 可以给导航栏前面添加字体图标，美化效果：
 
@@ -251,7 +249,7 @@ layui.use(['element', 'layer', 'util'], function(){
 <a class="" href="javascript:;"><i class="layui-icon layui-icon-template-1">&nbsp;&nbsp;</i>Kubernetes</a>
 ```
 
-### 3.4 主题颜色
+### 主题颜色
 
 顶部背景：
 
@@ -267,7 +265,7 @@ layui.use(['element', 'layer', 'util'], function(){
 <ul class="layui-nav layui-nav-tree layui-bg-cyan"  lay-filter="test">
 ```
 
-## 5、栅格系统
+## 栅格系统
 
 栅格也叫网格系统，是一种平面设计的方法和风格。以规则的网格阵列来指导和规范网页中的版面布局。
 
@@ -343,7 +341,7 @@ layui.use(['element', 'layer', 'util'], function(){
 </div>
 ```
 
-## 6、卡片面板
+## 卡片面板
 
 卡片式面板面板通常用于非白色背景色的主体内，从而衬托出边框投影的效果。主要用于美化显示。
 
@@ -358,7 +356,7 @@ layui.use(['element', 'layer', 'util'], function(){
 
 注：如果网页采用的是默认的白色背景，不建议使用卡片面板，因为无法衬托出效果。
 
-## 7、按钮
+## 按钮
 
 ```
 <!-- 基础按钮 -->
@@ -394,7 +392,7 @@ layui.use(['element', 'layer', 'util'], function(){
 </button>
 ```
 
-## 8、表单
+## 表单
 
 表单基本区块结构：
 
@@ -538,7 +536,7 @@ layui.use(['form','layer'], function(){
 </script>
 ```
 
-## 9、上传文件
+## 上传文件
 
 上述示例使用ajax提交data.field所有表单数据，但无法同时提交文件。如果按照之前讲的ajax原始方式提交又感觉太繁琐。
 
@@ -632,7 +630,7 @@ layui.use(['form','layer','upload'], function(){
             msg = "上传失败！"
 ```
 
-## 10、数据表格
+## 数据表格
 
 表格是呈现数据的主流方式。
 
@@ -743,7 +741,7 @@ table模块支持的常用参数：
 | templet | String        | 自定义列模板，模板遵循 laytpl语法。这是一个非常实用的功能，你可借助它实现逻辑处理，以及将原始数据转化成其它格式，如时间戳转化为日期字符等 |                                         |
 | toolbar | String        | 绑定工具条模板。可在每行对应的列中出现一些自定义的操作性按钮 |                                         |
 
-### 10.1 分页
+### 分页
 
 如果数据接口返回几百条记录的话，如果一次性显示的话表格会很多行，用户体验不佳。因此，一般会进行分页显示，例如一页显示10条记录，共十页。用户可以自行翻阅，记录少，清晰显示。
 
@@ -754,7 +752,7 @@ table.render 默认会自动传递两个参数：?page=1&limit=30（该参数可
 
 服务端数据接口根据这两个参数返回指定数量数据：
 
-```#
+```
 page = int(request.GET.get('page'))
 limit = int(request.GET.get('limit'))
 # data = data[0:10]
@@ -793,7 +791,7 @@ if request.method == "GET":
     return JsonResponse(user)
 ```
 
-### 10.2 表格工具栏
+### 表格工具栏
 
 ```
 <table class="layui-hide" id="test" lay-filter="test"></table>
@@ -1146,7 +1144,7 @@ def user(request):
         return JsonResponse(result)
 ```
 
-### 10.3 表格查询
+### 表格查询
 
 #### 搜索关键字查询
 
@@ -1343,7 +1341,7 @@ def user(request):
         return JsonResponse(user)
 ```
 
-### 10.4 数据表格内容美化
+### 数据表格内容美化
 
 在默认情况下，单元格的内容是完全按照数据接口返回的content原样输出的，如果你想对某列的单元格添加链接等其它元素，你可以借助该参数来轻松实现。这是一个非常实用且强大的功能，你的表格内容会因此而丰富多样。
 
@@ -1378,7 +1376,7 @@ function sexFormat(d) {
 }
 ```
 
-## 11、弹出层
+## 弹出层
 
 layer几种类型：
 
