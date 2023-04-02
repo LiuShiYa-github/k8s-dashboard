@@ -99,6 +99,13 @@
 
           layer.close(index);
         });
+      } else if(obj.event === 'yaml'){
+            layer.open({
+                title: "YAML",
+                type: 2, // 内嵌层，从另一个网址加载
+                area: ['50%', '60%'],
+                content: '{% url "ace_editor" %}?resource=pv&' + 'namespace=' + data['namespace'] + '&name=' + data['name']
+            })
       }
     });
     // 监听搜索事件

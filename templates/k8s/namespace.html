@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block title %}Namespace{% endblock %}
-{% block kubernetes %}layui-nav-itemed{% endblock %}
-{% block kubernetes-namespace %}layui-this{% endblock %}
+{% block item-1 %}layui-nav-itemed{% endblock %}
+{% block item-1-2 %}layui-this{% endblock %}
 {% block context %}
-<span class="layui-breadcrumb">
-    <a href="">首页</a>
-    <a href="">Kubernetes</a>
-    <a href="">Namespace</a>
-</span>
+    <span class="layui-breadcrumb">
+        <a href="#">首页</a>
+        <a href="#">Kubernetes</a>
+        <a><cite>Namespace</cite></a>
+    </span>
     <hr>
 
     <div  id="create" style="display: none">
@@ -45,13 +45,7 @@
             </div>
         </div>
     </div>
-
-
-
-
 {% endblock %}
-
-
 {% block custom_js %}
 
 <script>
@@ -88,19 +82,6 @@
           return result
       }
 
-    // 监听搜索事件
-    $(document).on('click','#searchBtn', function () {
-        var input_val = $('.layui-input').val();
-       // var input_val = $("input[name='name']").val();
-        table.reload('TT', {
-            where: {   //设定异步数据接口的额外参数，任意设置
-                search_key: input_val
-            },
-            page: {
-                curr: 1  //重新从第 1 页开始
-            }
-        })
-    });
 
      //监听行工具事件
     table.on('tool(test)', function(obj){
@@ -125,8 +106,30 @@
                   layer.msg("服务器接口异常！", {icon: 5})
               }
           });
+
+          layer.close(index);
         });
+      } else if(obj.event === 'yaml'){
+            layer.open({
+                title: "YAML",
+                type: 2, // 内嵌层，从另一个网址加载
+                area: ['50%', '60%'],
+                content: '{% url "ace_editor" %}?resource=namespace&' + 'namespace=' + data['namespace'] + '&name=' + data['name']
+            })
       }
+    });
+    // 监听搜索事件
+    $(document).on('click','#searchBtn', function () {
+        var input_val = $('.layui-input').val();
+       // var input_val = $("input[name='name']").val();
+        table.reload('TT', {
+            where: {   //设定异步数据接口的额外参数，任意设置
+                search_key: input_val
+            },
+            page: {
+                curr: 1  //重新从第 1 页开始
+            }
+        })
     });
 
     $("#createNS").on("click", function () {
@@ -160,6 +163,7 @@
             }
         });
     })
+
 
 });
 </script>

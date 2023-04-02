@@ -4,6 +4,8 @@ from k8s import views
 urlpatterns = [
     re_path('node/$', views.node, name='node'),
     re_path('node_api/$', views.node_api, name='node_api'),
+    re_path('node_details/$', views.node_details, name='node_details'),
+    re_path('node_details_pod_list/$', views.node_details_pod_list, name='node_details_pod_list'),
 
     re_path('namespace/$', views.namespace, name='namespace'),
     re_path('namespace_api/$', views.namespace_api, name='namespace_api'),

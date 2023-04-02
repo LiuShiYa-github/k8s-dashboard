@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 {% block title %}Deployment{% endblock %}
-{% block workload %}layui-nav-itemed{% endblock %}
-{% block workload-deployment %}layui-this{% endblock %}
+{% block item-2 %}layui-nav-itemed{% endblock %}
+{% block item-2-1 %}layui-this{% endblock %}
 {% block context %}
-<span class="layui-breadcrumb">
-    <a href="">首页</a>
-    <a href="">Workload</a>
-    <a href="">Deployment</a>
-</span>
+
+   <span class="layui-breadcrumb">
+        <a href="#">首页</a>
+        <a href="#">Kubernetes</a>
+        <a><cite>Deployment</cite></a>
+    </span>
     <hr>
     <div class="layui-card">
         {% csrf_token %}
@@ -121,6 +122,15 @@
 
           layer.close(index);
         });
+      } else if(obj.event === 'yaml'){
+            layer.open({
+                title: "YAML",
+                type: 2, // 内嵌层，从另一个网址加载
+                area: ['50%', '60%'],
+                content: '{% url "ace_editor" %}?resource=deployment&' + 'namespace=' + data['namespace'] + '&name=' + data['name']
+            })
+      } else if(obj.event === 'details'){
+            window.location.href="{% url 'deployment_details' %}?namespace=" + data['namespace'] + '&name=' + data["name"]
       } else if(obj.event === 'scale'){
              layer.prompt({
                 formType: 0

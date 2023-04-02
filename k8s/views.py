@@ -1,16 +1,13 @@
 from django.shortcuts import render
-from kubernetes import client
 from django.http import JsonResponse, QueryDict
 from dashboard import auth_check
+from kubernetes import client
+from dashboard import node_data
 
 
 # Create your views here.
 
-
-def node(request):
-    return render(request, 'k8s/node.html')
-
-
+@auth_check.self_login_required
 def namespace(request):
     return render(request, 'k8s/namespace.html')
 
@@ -22,12 +19,12 @@ def namespace_api(request):
     token = request.session.get("token")
     auth_check.load_auth_config(auth_type, token)
     core_api = client.CoreV1Api()
+
     if request.method == "GET":
         data = []
         search_key = request.GET.get("search_key")
         try:
-            # items返回一个对象，类LIST（[{命名空间属性},{命名空间属性}] ），每个元素是一个类字典（命名空间属性），操作类字典
-            for ns in core_api.list_namespace().items:
+            for ns in core_api.list_namespace().items:  # items返回一个对象，类LIST（[{命名空间属性},{命名空间属性}] ），每个元素是一个类字典（命名空间属性），操作类字典
                 name = ns.metadata.name
                 labels = ns.metadata.labels
                 create_time = ns.metadata.creation_timestamp
@@ -47,9 +44,7 @@ def namespace_api(request):
             else:
                 msg = "查询失败！"
             code = 1
-            msg = "查询成功"
-            result = {'code': code, 'msg': msg, 'data': data}
-            return JsonResponse(result)
+
         # 分页
         count = len(data)  # 要在切片之前获取总数
 
@@ -116,6 +111,11 @@ def namespace_api(request):
 
 
 @auth_check.self_login_required
+def node(request):
+    return render(request, 'k8s/node.html')
+
+
+@auth_check.self_login_required
 def node_api(request):
     # 获取当前用户登录凭据，调用k8s api操作命名空间
     auth_type = request.session.get("auth_type")
@@ -171,6 +171,119 @@ def node_api(request):
         return JsonResponse(result)
     elif request.method == "DELETE":
         pass
+
+
+@auth_check.self_login_required
+def node_details(request):
+    auth_type = request.session.get("auth_type")
+    token = request.session.get("token")
+    auth_check.load_auth_config(auth_type, token)
+    core_api = client.CoreV1Api()
+
+    node_name = request.GET.get("node_name")
+    # 根据节点名称获取对应资源，再渲染到模板里
+    n_r = node_data.node_resource(core_api, node_name)
+    n_i = node_data.node_info(core_api, node_name)
+    return render(request, 'k8s/node_details.html', {"node_name": node_name, "node_resouces": n_r, "node_info": n_i})
+
+
+@auth_check.self_login_required
+def node_details_pod_list(request):
+    auth_type = request.session.get("auth_type")
+    token = request.session.get("token")
+    auth_check.load_auth_config(auth_type, token)
+    core_api = client.CoreV1Api()
+
+    node_name = request.GET.get("node_name", None)
+
+    data = []
+    try:
+        for pod in core_api.list_pod_for_all_namespaces().items:
+            name = pod.spec.node_name
+            pod_name = pod.metadata.name
+            namespace = pod.metadata.namespace
+            status = ("运行中" if pod.status.conditions[-1].status else "异常")
+            host_network = pod.spec.host_network
+            pod_ip = ("主机网络" if host_network else pod.status.pod_ip)
+            create_time = auth_check.timestamp_format(pod.metadata.creation_timestamp)
+
+            if name == node_name:
+                if len(pod.spec.containers) == 1:
+                    cpu_requests = "0"
+                    cpu_limits = "0"
+                    memory_requests = "0"
+                    memory_limits = "0"
+                    for c in pod.spec.containers:
+                        # c_name = c.name
+                        # c_image= c.image
+                        cpu_requests = "0"
+                        cpu_limits = "0"
+                        memory_requests = "0"
+                        memory_limits = "0"
+                        if c.resources.requests is not None:
+                            if "cpu" in c.resources.requests:
+                                cpu_requests = c.resources.requests["cpu"]
+                            if "memory" in c.resources.requests:
+                                memory_requests = c.resources.requests["memory"]
+                        if c.resources.limits is not None:
+                            if "cpu" in c.resources.limits:
+                                cpu_limits = c.resources.limits["cpu"]
+                            if "memory" in c.resources.limits:
+                                memory_limits = c.resources.limits["memory"]
+                else:
+                    c_r = "0"
+                    c_l = "0"
+                    m_r = "0"
+                    m_l = "0"
+                    cpu_requests = ""
+                    cpu_limits = ""
+                    memory_requests = ""
+                    memory_limits = ""
+                    for c in pod.spec.containers:
+                        c_name = c.name
+                        # c_image= c.image
+                        if c.resources.requests is not None:
+                            if "cpu" in c.resources.requests:
+                                c_r = c.resources.requests["cpu"]
+                            if "memory" in c.resources.requests:
+                                m_r = c.resources.requests["memory"]
+                        if c.resources.limits is not None:
+                            if "cpu" in c.resources.limits:
+                                c_l = c.resources.limits["cpu"]
+                            if "memory" in c.resources.limits:
+                                m_l = c.resources.limits["memory"]
+
+                        cpu_requests += "%s=%s<br>" % (c_name, c_r)
+                        cpu_limits += "%s=%s<br>" % (c_name, c_l)
+                        memory_requests += "%s=%s<br>" % (c_name, m_r)
+                        memory_limits += "%s=%s<br>" % (c_name, m_l)
+
+                pod = {"pod_name": pod_name, "namespace": namespace, "status": status, "pod_ip": pod_ip,
+                       "cpu_requests": cpu_requests, "cpu_limits": cpu_limits, "memory_requests": memory_requests,
+                       "memory_limits": memory_limits, "create_time": create_time}
+                data.append(pod)
+
+        count = len(data)
+
+        page = int(request.GET.get('page'))
+        limit = int(request.GET.get('limit'))
+        # data = data[0:10]
+        start = (page - 1) * limit  # 切片的起始值
+        end = page * limit  # 切片的末值
+        data = data[start:end]  # 返回指定数据范围
+
+        code = 0
+        msg = "获取数据成功"
+        res = {"code": code, "msg": msg, "count": count, "data": data}
+        return JsonResponse(res)
+    except Exception as e:
+        status = getattr(e, "status")
+        if status == 403:
+            msg = "没有访问权限！"
+        else:
+            msg = "查询失败！"
+        res = {"code": 1, "msg": msg}
+        return JsonResponse(res)
 
 
 @auth_check.self_login_required
