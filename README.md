@@ -30,9 +30,11 @@ node详情页
 namespace详情页
 ![img_20.png](img/img_20.png)
 
-deployment详情页
+deployment查看yaml
 ![img_21.png](img/img_21.png)
 
+deployment详情页
+![img.png](img/img_23.png)
 
 
 ## 知识文档
@@ -49,8 +51,7 @@ deployment详情页
 1、pv等资源创建完成后自动跳转到pv展示页面
 2、pv等资源创建支持自定义大小规格
 3、创建deployment资源时自动获取所有的名称空间，而不是随着上面页面的名称空间创建
-4、deployment详情页
-5、健全开发文档
+4、健全Django开发文档
 ```
 
 

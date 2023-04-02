@@ -224,7 +224,7 @@ def deployment_details(request):
     auth_check.load_auth_config(auth_type, token)
     core_api = client.CoreV1Api()
     apps_api = client.AppsV1Api()
-    networking_api = client.NetworkingV1Api()
+    networking_api = client.NetworkingV1beta1Api()
 
     dp_name = request.GET.get("name")
     namespace = request.GET.get("namespace")
