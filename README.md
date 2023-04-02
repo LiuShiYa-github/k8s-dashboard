@@ -37,6 +37,18 @@ deployment详情页
 ![img.png](img/img_23.png)
 
 
+## 如何使用
+```text
+#1、获取代码
+git clone https://github.com/LiuShiYa-github/k8s-dashboard.git
+#2、下载依赖
+pip install -r requirements.txt
+#3、修改dashboard/auth_check.py/中的apiserver
+apiserver = "https://10.0.0.6:6443" 修改为k8s集群地址
+#4、运行项目
+python manage.py runserver
+```
+
 ## 知识文档
 
 * [Django](https://github.com/LiuShiYa-github/k8s-dashboard/blob/main/img/Django.md)
@@ -52,6 +64,7 @@ deployment详情页
 2、pv等资源创建支持自定义大小规格
 3、创建deployment资源时自动获取所有的名称空间，而不是随着上面页面的名称空间创建
 4、健全Django开发文档
+5、提供Docker环境快速体验
 ```
 
 
