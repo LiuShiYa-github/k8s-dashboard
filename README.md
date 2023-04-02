@@ -35,8 +35,12 @@ deployment详情页
 
 
 
-## 涉及知识点以及文档
+## 知识文档
 
+* [Django](https://github.com/LiuShiYa-github/k8s-dashboard/blob/main/img/Django.md)
+* [HTML](https://github.com/LiuShiYa-github/k8s-dashboard/blob/main/img/HTML.md)
+* [Layui](https://github.com/LiuShiYa-github/k8s-dashboard/blob/main/img/Layui.md)
+* [K8sapi](https://github.com/LiuShiYa-github/k8s-dashboard/blob/main/img/K8s-api.md)
 
 
 ## 持续优化
